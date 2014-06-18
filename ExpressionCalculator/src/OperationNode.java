@@ -5,10 +5,10 @@ public class OperationNode extends Node {
 	private Node leftNode;
 	private Node rightNode;
 	
-	public OperationNode(Operation operation){
+	public OperationNode(Operation operation, Node leftNode, Node rightNode){
 		this.SetOperation(operation);
-		this.leftNode = null;
-		this.rightNode = null;
+		this.leftNode = leftNode;
+		this.rightNode = rightNode;
 	}
 	
 	public Operation GetOperation(){
