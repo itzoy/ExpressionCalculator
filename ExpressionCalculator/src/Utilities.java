@@ -1,4 +1,10 @@
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,11 +19,23 @@ import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 
 public class Utilities {
-	static String readFile(String path, Charset encoding) throws IOException {
+	static String ReadFile(String path, Charset encoding) throws IOException {
 		  byte[] encoded = Files.readAllBytes(Paths.get(path));
 		  return new String(encoded, encoding);
 	}
 	
+	static void WriteToFile(String path, String text) throws IOException{
+		Writer writer = null;
+
+		try {
+		    writer = new BufferedWriter(new OutputStreamWriter(
+		          new FileOutputStream(path), "utf-8"));
+		    writer.write(text);
+		}  finally {
+		   writer.close();
+		}	
+	}
+
 	public String CreatePostfixNotationFromInfix(String infix) throws InvalidValue{
 		Deque<Object> queue = new ArrayDeque<Object>();
 		Stack<Character> stack = new Stack<Character>();
