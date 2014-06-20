@@ -57,7 +57,7 @@ public class Utilities {
 		}
 		
 		if(stack.empty() == false){
-			while(stack.empty()){
+			while(stack.empty() == false){
 				char currentChar = stack.pop();
 				if(currentChar == '('){
 					throw new InputMismatchException("Parenthesis not valid !!!");
