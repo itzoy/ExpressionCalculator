@@ -9,9 +9,13 @@ import com.jgoodies.forms.layout.RowSpec;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
@@ -21,10 +25,16 @@ import javax.swing.Action;
 import java.awt.event.ActionListener;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JProgressBar;
+
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 
 public class Expression {
@@ -35,6 +45,7 @@ public class Expression {
 	private JTextField textField_2;
 	private final Action action = new SwingAction();
 	private JTextField textField_3;
+	private JSpinner spinner;
 
 	/**
 	 * Launch the application.
@@ -80,13 +91,14 @@ public class Expression {
 		gbc_lblThreads_1.gridy = 1;
 		frame.getContentPane().add(lblThreads_1, gbc_lblThreads_1);
 		
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(1, 1, 24, 1));
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.insets = new Insets(0, 0, 5, 5);
 		gbc_spinner.gridx = 1;
 		gbc_spinner.gridy = 1;
 		frame.getContentPane().add(spinner, gbc_spinner);
+		
 		
 		JLabel lblParameters = new JLabel("Parameters:");
 		GridBagConstraints gbc_lblParameters = new GridBagConstraints();
@@ -190,6 +202,28 @@ public class Expression {
 		JButton btnCalculate = new JButton("Calculate");
 		btnCalculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String result;
+				String expression;
+				int numberOfThreads = (int) spinner.getValue();
+				if(textField.getText().equals("")){
+					expression = textField_3.getText();
+					try {
+						result = Worker.CalculateFromExpression(expression, null, numberOfThreads);
+					} 
+					catch (InvalidValue | InvalidAlgorithmParameterException e) {
+						result = e.getMessage();
+					}
+				}
+				else{
+					expression = textField.getText();
+					try {
+						result = Worker.CalculateFromFile(expression, numberOfThreads);
+					} 
+					catch (InvalidValue | InvalidAlgorithmParameterException
+							| IOException e) {
+						result = e.getMessage();
+					}
+				}
 			}
 		});
 		GridBagConstraints gbc_btnCalculate = new GridBagConstraints();
@@ -197,6 +231,21 @@ public class Expression {
 		gbc_btnCalculate.gridx = 0;
 		gbc_btnCalculate.gridy = 7;
 		frame.getContentPane().add(btnCalculate, gbc_btnCalculate);
+		
+		JLabel lblLoading = new JLabel("Loading:");
+		GridBagConstraints gbc_lblLoading = new GridBagConstraints();
+		gbc_lblLoading.insets = new Insets(0, 0, 5, 5);
+		gbc_lblLoading.gridx = 1;
+		gbc_lblLoading.gridy = 7;
+		frame.getContentPane().add(lblLoading, gbc_lblLoading);
+		
+		JProgressBar progressBar = new JProgressBar();
+		GridBagConstraints gbc_progressBar = new GridBagConstraints();
+		gbc_progressBar.insets = new Insets(0, 0, 5, 0);
+		gbc_progressBar.gridx = 2;
+		gbc_progressBar.gridy = 7;
+		progressBar.setValue(0);
+		frame.getContentPane().add(progressBar, gbc_progressBar);
 		
 		JLabel lblCalculatingTime = new JLabel("Calculating Time:");
 		GridBagConstraints gbc_lblCalculatingTime = new GridBagConstraints();
@@ -214,6 +263,8 @@ public class Expression {
 		frame.getContentPane().add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 	}
+	
+	
 
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {

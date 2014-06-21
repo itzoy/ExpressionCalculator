@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Queue;
 
 
-public class ExpressionTree implements {
+public class ExpressionTree{
 	private Node root;
 	
 	private void Calculate(Node currentNode){
