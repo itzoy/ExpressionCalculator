@@ -49,5 +49,45 @@ public class Node {
 		this.rightNode = value;
 	}
 	
-	
+	@Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        
+        Node other = (Node) obj; 
+        
+        if(this.operation != other.operation){
+        	return false;
+        }
+        
+        if((this.data == null) != (other.data == null)){
+        	return false;
+        }
+        
+        if(this.data != null && other.data != null && this.data.equals(other.data) == false){
+        	return false;
+        }
+        
+        boolean leftEquals = false;
+        if(this.leftNode == null && other.leftNode == null){
+        	leftEquals = true;
+        }
+        else if(this.leftNode != null && other.leftNode != null){
+        	leftEquals = this.leftNode.equals(other.leftNode);
+        }
+        
+        boolean rightEquals = false;
+        if(this.rightNode == null && other.rightNode == null){
+        	rightEquals = true;
+        }
+        else if(this.rightNode != null && other.rightNode != null){
+        	rightEquals = this.rightNode.equals(other.rightNode);
+        }
+        
+        return (leftEquals && rightEquals);
+	}
 }

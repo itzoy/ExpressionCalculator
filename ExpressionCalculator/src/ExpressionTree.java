@@ -130,4 +130,17 @@ public class ExpressionTree{
 		return result;
 	}
 	
+  @Override
+	    public boolean equals(Object obj) {
+	        if (obj == this) {
+	            return true;
+	        }
+	        if (obj == null || obj.getClass() != this.getClass()) {
+	            return false;
+	        }
+	        
+	        ExpressionTree other = (ExpressionTree) obj;
+	        
+	        return this.root.equals(other.root);
+  	}
 }

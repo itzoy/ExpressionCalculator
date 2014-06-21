@@ -3,6 +3,7 @@
 	<name>CLI</name>
 	<comment></comment>
 	<projects>
+		<project>ExpressionCalculator</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
