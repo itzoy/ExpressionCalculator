@@ -18,6 +18,16 @@ public class TestWorker {
 		
 		CalculationInfo result = Worker.CalculateFromFile(path, os, numberOfThreads);
 		assertEquals(expectedResult, result.getResult());
+	}
+	
+	@Test
+	public void TestWorker_FromExpression() throws InvalidValue, InvalidAlgorithmParameterException, IOException, InterruptedException{
+		String expression = "356 + 42 * 2 / ( 11 - 5 )";
+		OutputStream os = null;
+		int numberOfThreads = 1;
+		String expectedResult = "370";
 		
+		CalculationInfo result = Worker.CalculateFromExpression(expression, os, numberOfThreads);
+		assertEquals(expectedResult, result.getResult());
 	}
 }
