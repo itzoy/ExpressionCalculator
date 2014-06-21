@@ -1,7 +1,5 @@
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidParameterException;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.InputMismatchException;
 import java.util.Stack;
 
@@ -10,18 +8,35 @@ import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 
 public class Algorithms {
+	private static void PushSymbol(Character ch, StringBuilder queue){
+		if(ch == '+' || ch == '-' || ch == '*' || ch == '/'){
+			if(queue.length() > 0 && queue.charAt(queue.length() - 1) != ' '){
+				queue.append(' ');
+			}
+			queue.append(ch);
+		}
+		else if(ch == ' '){
+			if(queue.length() > 0 && queue.charAt(queue.length() - 1) != ' '){
+				queue.append(ch);
+			}
+		}
+		else{
+			queue.append(ch);
+		}
+	}
+	
 	public static String CreatePostfixNotationFromInfix(String infix) throws InvalidValue{
-		Deque<Object> queue = new ArrayDeque<Object>();
+		StringBuilder queue = new StringBuilder();
 		Stack<Character> stack = new Stack<Character>();
 		
 		int length = infix.length();
 		for(int i = 0; i < length; i++){
 			char currentChar = infix.charAt(i);
-			
 			if((currentChar >= '0' && currentChar <= '9') || currentChar == ' '){
-				queue.push(currentChar);
+				PushSymbol(currentChar, queue);
 			}
 			else{
+				PushSymbol(' ', queue);
 				if(currentChar == '('){
 					stack.push(currentChar);
 				}
@@ -31,7 +46,7 @@ public class Algorithms {
 					{
 						stackChar = stack.pop();
 						if(stackChar != '('){
-							queue.push(stackChar);
+							PushSymbol(stackChar, queue);
 			 			}
 					}while(stackChar != '(');
 				}
@@ -39,7 +54,12 @@ public class Algorithms {
 					int operatorPriority = OperatorPriority.Priority(currentChar);
 					while(stack.empty() == false && OperatorPriority.Priority(stack.peek()) >= operatorPriority)
 					{
-						queue.push(stack.pop());
+						if (stack.peek() != '('){
+							PushSymbol(stack.pop(), queue);
+						}
+						else {
+							break;
+						}
 					}
 					stack.push(currentChar);
 				}
@@ -55,7 +75,7 @@ public class Algorithms {
 				if(currentChar == '('){
 					throw new InputMismatchException("Parenthesis not valid !!!");
 					}
-				queue.push(currentChar);
+				PushSymbol(currentChar, queue);
 			}
 		}
 		
