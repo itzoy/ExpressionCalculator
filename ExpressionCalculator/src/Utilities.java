@@ -101,7 +101,7 @@ public class Utilities {
 			else
 			{
 				if(numberIsSet){
-					stack.push(new DataNode(currentNumber));
+					stack.push(new Node(currentNumber));
 					currentNumber = 0;
 					numberIsSet = false;
 				}
@@ -127,7 +127,7 @@ public class Utilities {
 				
 				Node firstNode = stack.pop();
 				Node secondNode = stack.pop();
-				stack.push(new OperationNode(operation, firstNode, secondNode));
+				stack.push(new Node(operation, firstNode, secondNode));
 			}
 		}
 		
