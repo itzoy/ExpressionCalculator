@@ -48,8 +48,8 @@ public class MainClass {
 		}
 		
 		OutputStream os = (q)? System.out : null;
-		String result = Worker.CalculateFromFile(inputFileName, os, t);
-		Utilities.WriteToFile(outputFileName, result);
+		CalculationInfo result = Worker.CalculateFromFile(inputFileName, os, t);
+		Utilities.WriteToFile(outputFileName, result.getResult());
 		
 		
 	}
