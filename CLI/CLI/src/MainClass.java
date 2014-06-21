@@ -49,6 +49,9 @@ public class MainClass {
 		
 		OutputStream os = (q)? null : System.out;
 		CalculationInfo result = Worker.CalculateFromFile(inputFileName, os, t);
+		
+		System.out.println("Execution time: " + result.getCalculatingTime());
+		
 		Utilities.WriteToFile(outputFileName, result.getResult());
 		
 		
