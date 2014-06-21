@@ -5,6 +5,7 @@ import java.util.Deque;
 import java.util.InputMismatchException;
 import java.util.Stack;
 
+import org.apfloat.Apfloat;
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 
@@ -76,7 +77,7 @@ public class Algorithms {
 			else
 			{
 				if(numberIsSet){
-					stack.push(new Node(currentNumber));
+					stack.push(new Node(new Apfloat(currentNumber, Constants.PRECISION_OF_APFLOAT)));
 					currentNumber = 0;
 					numberIsSet = false;
 				}

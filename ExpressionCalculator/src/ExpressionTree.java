@@ -1,33 +1,40 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import org.apfloat.Apfloat;
 
 
 public class ExpressionTree{
 	private Node root;
 	
-	public static int Calculate(Node currentNode){
+	private long calculationStart;
+	
+	private long calculationEnd;
+	
+	public static Apfloat Calculate(Node currentNode){
 		Operation operation = currentNode.GetOperation();
 		if(operation == null){
 			return currentNode.GetData();
 		}
 		else{
-			int left = Calculate(currentNode.GetLeftNode());
-			int right = Calculate(currentNode.GetRightNode());
+			Apfloat left = Calculate(currentNode.GetLeftNode());
+			Apfloat right = Calculate(currentNode.GetRightNode());
 			switch(currentNode.GetOperation()){
 			case ADDITION: 
-				currentNode.SetData(left + right);
+				currentNode.SetData(left.add(right));
 				break;
 			case SUBTRACTION:
-				currentNode.SetData(left - right);
+				currentNode.SetData(left.subtract(right));
 				break;
 			case MULTIPLICATION:
-				currentNode.SetData(left*right);
+				currentNode.SetData(left.multiply(right));
 				break;
 			case DIVISION:
-				currentNode.SetData(left/right);
+				currentNode.SetData(left.divide(right));
 				break;
 			default:
 				throw new UnsupportedOperationException();
@@ -49,7 +56,23 @@ public class ExpressionTree{
 		this.root = value;
 	}
 	
-	public Queue<Node> GetNodes(int number){
+	public long getCalculationStart() {
+		return calculationStart;
+	}
+
+	public void setCalculationStart(long calculationStart) {
+		this.calculationStart = calculationStart;
+	}
+
+	public long getCalculationEnd() {
+		return calculationEnd;
+	}
+
+	public void setCalculationEnd(long calculationEnd) {
+		this.calculationEnd = calculationEnd;
+	}
+	
+	private Queue<Node> GetNodes(int number){
 		int repeats = 0;
 		Queue<Node> result = new LinkedList<Node>();
 		result.add(this.GetRoot());
@@ -75,8 +98,10 @@ public class ExpressionTree{
 		return result;
 	}
 	
-	public int Calculate(int numberOfThreads, OutputStream os) throws IOException
+	public Apfloat Calculate(int numberOfThreads, OutputStream os) throws IOException, InterruptedException
 	{
+		this.setCalculationStart(Calendar.getInstance().getTimeInMillis());
+		
 		Queue<Node> nodes = this.GetNodes(numberOfThreads);
 		Thread threads[] = new Thread[nodes.size()];
 		CalculateNode calculations[] = new CalculateNode[nodes.size()];
@@ -92,17 +117,15 @@ public class ExpressionTree{
 		}
 		
 		for(int i = 0; i < threads.length; i++){
-			try {
-				threads[i].join();
-				long timeExecution = calculations[i].getEndTime() - calculations[i].getStartTime();
-				String outputMessage = String.format("Thread %s worked %d ms", threads[i].getName(), timeExecution);
-				os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
-			} catch (InterruptedException e) {
-				// TODO: handle exception
-			}
+			threads[i].join();
+			long timeExecution = calculations[i].getEndTime() - calculations[i].getStartTime();
+			String outputMessage = String.format("Thread %s worked %d ms", threads[i].getName(), timeExecution);
+			os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
 		}
 		
-		int result = ExpressionTree.Calculate(this.root);
+		Apfloat result = ExpressionTree.Calculate(this.root);
+		
+		this.setCalculationEnd(Calendar.getInstance().getTimeInMillis());
 		
 		return result;
 	}

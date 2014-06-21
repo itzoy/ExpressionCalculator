@@ -1,10 +1,11 @@
+import org.apfloat.Apfloat;
 
 public class Node {
 	
 	private Operation operation;
 	private Node leftNode;
 	private Node rightNode;
-	private int data;
+	private Apfloat data;
 	
 	public Node(Operation operation, Node leftNode, Node rightNode){
 		this.SetOperation(operation);
@@ -12,18 +13,18 @@ public class Node {
 		this.SetRightNode(rightNode);
 	}
 	
-	public Node(int data){
+	public Node(Apfloat data){
 		this.SetData(data);
 		this.SetOperation(null);
 		this.SetLeftNode(null);
 		this.SetRightNode(null);
 	}
 	
-	public int GetData(){
+	public Apfloat GetData(){
 		return this.data;
 	}
 	
-	public void SetData(int value){
+	public void SetData(Apfloat value){
 		this.data = value;
 	}
 	
