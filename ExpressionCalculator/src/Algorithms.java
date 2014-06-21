@@ -17,7 +17,8 @@ public class Algorithms {
 		int length = infix.length();
 		for(int i = 0; i < length; i++){
 			char currentChar = infix.charAt(i);
-			if(currentChar >= '0' && currentChar <= '9'){
+			
+			if((currentChar >= '0' && currentChar <= '9') || currentChar == ' '){
 				queue.push(currentChar);
 			}
 			else{
@@ -36,7 +37,7 @@ public class Algorithms {
 				}
 				else if(currentChar == '+' || currentChar == '-' ||currentChar == '*' ||currentChar == '/'){
 					int operatorPriority = OperatorPriority.Priority(currentChar);
-					while(stack.empty() == false && OperatorPriority.Priority(stack.peek()) > operatorPriority)
+					while(stack.empty() == false && OperatorPriority.Priority(stack.peek()) >= operatorPriority)
 					{
 						queue.push(stack.pop());
 					}
