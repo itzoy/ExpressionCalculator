@@ -217,7 +217,7 @@ public class Expression {
 				else{
 					expression = textField.getText();
 					try {
-						result = Worker.CalculateFromFile(expression, numberOfThreads);
+						result = Worker.CalculateFromFile(expression, null, numberOfThreads);
 					} 
 					catch (InvalidValue | InvalidAlgorithmParameterException
 							| IOException e) {
