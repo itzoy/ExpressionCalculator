@@ -7,7 +7,7 @@ import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 
 public class Worker {
-	public static String CalculateFromFile(String Path, int numberOfThreads) throws IOException, InvalidValue, InvalidAlgorithmParameterException
+	public static String CalculateFromFile(String Path, OutputStream os, int numberOfThreads) throws IOException, InvalidValue, InvalidAlgorithmParameterException
 	{
 		String expression = Utilities.ReadFile(Path, Charset.forName("utf-8"));
 		
