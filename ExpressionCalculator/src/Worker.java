@@ -26,9 +26,8 @@ public class Worker {
 		Apfloat result = tree.Calculate(numberOfThreads, os);
 		
 		long calculationTime = tree.getCalculationEnd() - tree.getCalculationStart();
-		String resultInfo = result.toString();
 		
-		CalculationInfo resultInformation = new CalculationInfo(calculationTime, resultInfo);
+		CalculationInfo resultInformation = new CalculationInfo(calculationTime, result.toString(true));
 		
 		return resultInformation;
 		

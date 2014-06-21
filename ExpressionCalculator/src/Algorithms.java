@@ -32,6 +32,9 @@ public class Algorithms {
 		int length = infix.length();
 		for(int i = 0; i < length; i++){
 			char currentChar = infix.charAt(i);
+			if(Character.toString(currentChar).equals(System.lineSeparator())){
+				continue;
+			}
 			if((currentChar >= '0' && currentChar <= '9') || currentChar == ' '){
 				PushSymbol(currentChar, queue);
 			}
@@ -64,7 +67,7 @@ public class Algorithms {
 					stack.push(currentChar);
 				}
 				else {
-					throw new InvalidValue("Invalid symbol !!!");
+					throw new InvalidValue("Invalid symbol !!!" + currentChar);
 				}
 			}
 		}
