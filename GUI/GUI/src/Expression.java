@@ -40,12 +40,13 @@ import org.omg.CORBA.DynAnyPackage.InvalidValue;
 public class Expression {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField inputFile;
+	private JTextField calculatingTimeField;
+	private JTextField resultField;
 	private final Action action = new SwingAction();
-	private JTextField textField_3;
+	private JTextField expressionField;
 	private JSpinner spinner;
+	private JProgressBar progressBar;
 
 	/**
 	 * Launch the application.
@@ -114,15 +115,16 @@ public class Expression {
 		gbc_lblfFiletxt.gridy = 3;
 		frame.getContentPane().add(lblfFiletxt, gbc_lblfFiletxt);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.WEST;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 3;
-		frame.getContentPane().add(textField, gbc_textField);
-		textField.setColumns(10);
+		inputFile = new JTextField();
+		inputFile.setEditable(false);
+		GridBagConstraints gbc_inputFile = new GridBagConstraints();
+		gbc_inputFile.fill = GridBagConstraints.VERTICAL;
+		gbc_inputFile.anchor = GridBagConstraints.WEST;
+		gbc_inputFile.insets = new Insets(0, 0, 5, 5);
+		gbc_inputFile.gridx = 1;
+		gbc_inputFile.gridy = 3;
+		frame.getContentPane().add(inputFile, gbc_inputFile);
+		inputFile.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Browse");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -133,10 +135,8 @@ public class Expression {
 			    chooser.setFileFilter(filter);
 			    int returnVal = chooser.showOpenDialog(frame);
 			    if(returnVal == JFileChooser.APPROVE_OPTION) {
-			       System.out.println("You chose to open this file: " +
-			            chooser.getSelectedFile().getName());
+			    	inputFile.setText(chooser.getSelectedFile().getAbsolutePath());
 			    }
-			    textField.setText(chooser.getSelectedFile().getName());
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -157,15 +157,14 @@ public class Expression {
 		gbc_lblNewLabel.gridy = 4;
 		frame.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
 		
-		textField_3 = new JTextField();
-		textField_3.setEnabled(false);
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_3.gridx = 1;
-		gbc_textField_3.gridy = 4;
-		frame.getContentPane().add(textField_3, gbc_textField_3);
-		textField_3.setColumns(10);
+		expressionField = new JTextField();
+		GridBagConstraints gbc_expressionField = new GridBagConstraints();
+		gbc_expressionField.insets = new Insets(0, 0, 5, 5);
+		gbc_expressionField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_expressionField.gridx = 1;
+		gbc_expressionField.gridy = 4;
+		frame.getContentPane().add(expressionField, gbc_expressionField);
+		expressionField.setColumns(10);
 		
 		JLabel lbloResulttxt = new JLabel("result");
 		GridBagConstraints gbc_lbloResulttxt = new GridBagConstraints();
@@ -174,16 +173,15 @@ public class Expression {
 		gbc_lbloResulttxt.gridy = 5;
 		frame.getContentPane().add(lbloResulttxt, gbc_lbloResulttxt);
 		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.gridwidth = 2;
-		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 1;
-		gbc_textField_2.gridy = 5;
-		frame.getContentPane().add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		resultField = new JTextField();
+		resultField.setEditable(false);
+		GridBagConstraints gbc_resultField = new GridBagConstraints();
+		gbc_resultField.anchor = GridBagConstraints.NORTHWEST;
+		gbc_resultField.insets = new Insets(0, 0, 5, 5);
+		gbc_resultField.gridx = 1;
+		gbc_resultField.gridy = 5;
+		frame.getContentPane().add(resultField, gbc_resultField);
+		resultField.setColumns(10);
 		
 		JLabel lblq = new JLabel("-q");
 		GridBagConstraints gbc_lblq = new GridBagConstraints();
@@ -205,8 +203,8 @@ public class Expression {
 				String result;
 				String expression;
 				int numberOfThreads = (int) spinner.getValue();
-				if(textField.getText().equals("")){
-					expression = textField_3.getText();
+				if(inputFile.getText().equals("")){
+					expression = expressionField.getText();
 					try {
 						result = Worker.CalculateFromExpression(expression, null, numberOfThreads);
 					} 
@@ -215,7 +213,7 @@ public class Expression {
 					}
 				}
 				else{
-					expression = textField.getText();
+					expression = inputFile.getText();
 					try {
 						result = Worker.CalculateFromFile(expression, null, numberOfThreads);
 					} 
@@ -223,6 +221,7 @@ public class Expression {
 						result = e.getMessage();
 					}
 				}
+				resultField.setText(result);
 			}
 		});
 		GridBagConstraints gbc_btnCalculate = new GridBagConstraints();
@@ -238,7 +237,7 @@ public class Expression {
 		gbc_lblLoading.gridy = 7;
 		frame.getContentPane().add(lblLoading, gbc_lblLoading);
 		
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.insets = new Insets(0, 0, 5, 0);
 		gbc_progressBar.gridx = 2;
@@ -253,14 +252,14 @@ public class Expression {
 		gbc_lblCalculatingTime.gridy = 8;
 		frame.getContentPane().add(lblCalculatingTime, gbc_lblCalculatingTime);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 8;
-		frame.getContentPane().add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		calculatingTimeField = new JTextField();
+		calculatingTimeField.setEditable(false);
+		GridBagConstraints gbc_calculatingTimeField = new GridBagConstraints();
+		gbc_calculatingTimeField.anchor = GridBagConstraints.NORTHWEST;
+		gbc_calculatingTimeField.gridx = 2;
+		gbc_calculatingTimeField.gridy = 8;
+		frame.getContentPane().add(calculatingTimeField, gbc_calculatingTimeField);
+		calculatingTimeField.setColumns(10);
 	}
 	
 	
