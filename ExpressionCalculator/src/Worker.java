@@ -13,7 +13,7 @@ public class Worker {
 	{
 		String expression = Utilities.ReadFile(Path, Charset.forName("utf-8"));
 		
-		return CalculateFromExpression(expression, null, numberOfThreads);
+		return CalculateFromExpression(expression, os, numberOfThreads);
 	}
 	
 	public static CalculationInfo CalculateFromExpression(String expression, OutputStream os, int numberOfThreads) throws InvalidValue, InvalidAlgorithmParameterException, IOException, InterruptedException

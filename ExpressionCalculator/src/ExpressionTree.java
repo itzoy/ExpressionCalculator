@@ -106,6 +106,7 @@ public class ExpressionTree{
 		Thread threads[] = new Thread[nodes.size()];
 		CalculateNode calculations[] = new CalculateNode[nodes.size()];
 		int index = 0;
+		
 		while(nodes.isEmpty() == false)
 		{
 			Node currentNode = nodes.poll();
@@ -116,13 +117,15 @@ public class ExpressionTree{
 			index++;
 		}
 		
-		for(int i = 0; i < threads.length; i++){
+		
+		
+		for(int i = 0; i < threads.length; i++){	
 			threads[i].join();
 			long timeExecution = calculations[i].getEndTime() - calculations[i].getStartTime();
-			String outputMessage = String.format("Thread %s worked %d ms", threads[i].getName(), timeExecution);
+			String outputMessage = String.format("Thread %s worked %d ms" + System.lineSeparator(), threads[i].getName(), timeExecution);
+			
 			if(os != null){
 				os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
-				os.flush();
 			}
 		}
 		
