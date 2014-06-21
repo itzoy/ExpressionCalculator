@@ -3,7 +3,7 @@ import java.math.BigInteger;
 
 public class MainClass {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 
 		if (args.length > 7) {
@@ -11,12 +11,10 @@ public class MainClass {
 			System.exit(1);
 		}
 		
-		String inputFileName;
+		String inputFileName = "";
 		String outputFileName = "result.txt";
-		int t;
+		int t = 0;
 		boolean q = false;
-		
-		
 		
 		for(int i = 0; i < args.length; i++){
 			switch (args[i]) {
@@ -38,42 +36,12 @@ public class MainClass {
 			}
 		}
 		
-		String result = Worker.CalculateFromFile(inputFileName, System.out);
+		if (inputFileName == "") throw new Exception("Must have input file!");
+		if (t == 0) throw new Exception("Tasks must be at least 1!");
 		
-		int thread_count = new Integer(args[1]);
+		String result = Worker.CalculateFromFile(inputFileName, System.out, t);
 		
-		int chunk_size = el_count / thread_count;
-
-		long a[] = new long[el_count];
-		BigInteger res[] = new BigInteger[thread_count];
-	
-		Thread tr[] = new Thread[thread_count];
 		
-		for(int i = 0; i < thread_count; i++) {
-
-			SumRunnable r = new SumRunnable(a, res, chunk_size, i, thread_count);
-			Thread t = new Thread(r);
-			tr[i] = t;
-			t.start();
-		
-		}
-		
-		BigInteger sum = BigInteger.valueOf(0);
-		// BigInteger sum = BigInteger.valueOf(1);
-		for(int i = 0; i < thread_count; i++) {
-			
-			try {
-				
-				tr[i].join();
-				sum = sum.add(res[i]);
-				// sum = sum.multiply(res[i]);
-			} catch (InterruptedException e) {
-				
-			}
-			
-		}
-		
-		System.out.println("result: " + sum);
 		
 	}
 
