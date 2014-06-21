@@ -1,4 +1,4 @@
-import java.math.BigInteger;
+import java.io.OutputStream;
 
 
 public class MainClass {
@@ -6,7 +6,7 @@ public class MainClass {
 	public static void main(String[] args) throws Exception {
 		
 
-		if (args.length > 7) {
+		if (args.length > 9) {
 			System.out.println("Too many arguments!");
 			System.exit(1);
 		}
@@ -30,17 +30,26 @@ public class MainClass {
 			case "-q":
 				q = true;
 				break;
+			case "-p":
+				Constants.PRECISION_OF_APFLOAT = Integer.parseInt(args[i + 1]);
+				break;
 
 			default:
 				break;
 			}
 		}
 		
-		if (inputFileName == "") throw new Exception("Must have input file!");
-		if (t == 0) throw new Exception("Tasks must be at least 1!");
+		if (inputFileName == "") {
+			throw new Exception("Must have input file!");
+		}
 		
-		String result = Worker.CalculateFromFile(inputFileName, System.out, t);
+		if (t == 0) {
+			throw new Exception("Tasks must be at least 1!");
+		}
 		
+		OutputStream os = (q)? System.out : null;
+		String result = Worker.CalculateFromFile(inputFileName, os, t);
+		Utilities.WriteToFile(outputFileName, result);
 		
 		
 	}

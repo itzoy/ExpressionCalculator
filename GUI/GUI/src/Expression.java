@@ -210,7 +210,7 @@ public class Expression {
 					try {
 						result = Worker.CalculateFromExpression(expression, null, numberOfThreads);
 					} 
-					catch (InvalidValue | InvalidAlgorithmParameterException e) {
+					catch (Exception e) {
 						result = e.getMessage();
 					}
 				}
@@ -219,8 +219,7 @@ public class Expression {
 					try {
 						result = Worker.CalculateFromFile(expression, null, numberOfThreads);
 					} 
-					catch (InvalidValue | InvalidAlgorithmParameterException
-							| IOException e) {
+					catch (Exception e) {
 						result = e.getMessage();
 					}
 				}
