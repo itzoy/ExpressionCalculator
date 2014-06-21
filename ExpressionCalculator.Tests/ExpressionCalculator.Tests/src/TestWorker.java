@@ -1,6 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.InvalidAlgorithmParameterException;
@@ -12,7 +11,7 @@ public class TestWorker {
 	
 	@Test
 	public void TestWorker_FromFile() throws InvalidValue, InvalidAlgorithmParameterException, IOException, InterruptedException {
-		String path = "Desktop/input.txt";
+		String path = "/home/maria/Desktop/input.txt";
 		OutputStream os = null;
 		int numberOfThreads = 1;
 		String expectedResult = "14";
