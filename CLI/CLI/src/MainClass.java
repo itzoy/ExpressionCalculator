@@ -47,7 +47,7 @@ public class MainClass {
 			throw new Exception("Tasks must be at least 1!");
 		}
 		
-		OutputStream os = (q)? System.out : null;
+		OutputStream os = (q)? null : System.out;
 		CalculationInfo result = Worker.CalculateFromFile(inputFileName, os, t);
 		Utilities.WriteToFile(outputFileName, result.getResult());
 		

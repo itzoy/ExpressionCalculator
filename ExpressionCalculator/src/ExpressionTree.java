@@ -122,6 +122,7 @@ public class ExpressionTree{
 			String outputMessage = String.format("Thread %s worked %d ms", threads[i].getName(), timeExecution);
 			if(os != null){
 				os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
+				os.flush();
 			}
 		}
 		
