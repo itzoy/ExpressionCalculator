@@ -1,23 +1,21 @@
+import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 
 public class ExpressionTree{
 	private Node root;
 	
-	private void Calculate(Node currentNode){
+	public static int Calculate(Node currentNode){
 		Operation operation = currentNode.GetOperation();
 		if(operation == null){
-			currentNode.GetData();
+			return currentNode.GetData();
 		}
 		else{
-			this.Calculate(currentNode.GetLeftNode());
-			this.Calculate(currentNode.GetRightNode());
-			int left = currentNode.GetLeftNode().GetData();
-			int right = currentNode.GetRightNode().GetData();
+			int left = Calculate(currentNode.GetLeftNode());
+			int right = Calculate(currentNode.GetRightNode());
 			switch(currentNode.GetOperation()){
 			case ADDITION: 
 				currentNode.SetData(left + right);
@@ -36,6 +34,7 @@ public class ExpressionTree{
 			}
 			
 			currentNode.SetOperation(null);
+			return currentNode.GetData();
 		}
 	}
 	
@@ -76,9 +75,36 @@ public class ExpressionTree{
 		return result;
 	}
 	
-	public int Calculate(int numberOfThreads, OutputStream os)
+	public int Calculate(int numberOfThreads, OutputStream os) throws IOException
 	{
-		this.GetNodes(numberOfThreads);
+		Queue<Node> nodes = this.GetNodes(numberOfThreads);
+		Thread threads[] = new Thread[nodes.size()];
+		CalculateNode calculations[] = new CalculateNode[nodes.size()];
+		int index = 0;
+		while(nodes.isEmpty() == false)
+		{
+			Node currentNode = nodes.poll();
+			calculations[index] = new CalculateNode(currentNode, os);
+			Thread currentThread = new Thread(calculations[index]);
+			threads[index] = currentThread;
+			currentThread.start();
+			index++;
+		}
+		
+		for(int i = 0; i < threads.length; i++){
+			try {
+				threads[i].join();
+				long timeExecution = calculations[i].getEndTime() - calculations[i].getStartTime();
+				String outputMessage = String.format("Thread %s worked %d ms", threads[i].getName(), timeExecution);
+				os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
+			} catch (InterruptedException e) {
+				// TODO: handle exception
+			}
+		}
+		
+		int result = ExpressionTree.Calculate(this.root);
+		
+		return result;
 	}
 	
 }

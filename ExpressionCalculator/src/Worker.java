@@ -14,7 +14,7 @@ public class Worker {
 		return CalculateFromExpression(expression, null, numberOfThreads);
 	}
 	
-	public static String CalculateFromExpression(String expression, OutputStream os, int numberOfThreads) throws InvalidValue, InvalidAlgorithmParameterException
+	public static String CalculateFromExpression(String expression, OutputStream os, int numberOfThreads) throws InvalidValue, InvalidAlgorithmParameterException, IOException
 	{
 		String postfix = Algorithms.CreatePostfixNotationFromInfix(expression);
 		ExpressionTree tree = Algorithms.CreateExpressionTreeFromPostfix(postfix);
