@@ -64,7 +64,7 @@ public class Algorithms {
 					stack.push(currentChar);
 				}
 				else {
-					throw new InvalidValue("Invalid symbol !!!");
+					throw new InvalidValue("Invalid symbol !!!" + currentChar);
 				}
 			}
 		}
