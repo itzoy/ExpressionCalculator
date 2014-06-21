@@ -122,9 +122,9 @@ public class Algorithms {
 					throw new InvalidParameterException();
 				}
 				
-				Node firstNode = stack.pop();
-				Node secondNode = stack.pop();
-				stack.push(new Node(operation, firstNode, secondNode));
+				Node rightNode = stack.pop();
+				Node leftNode = stack.pop();
+				stack.push(new Node(operation, leftNode, rightNode));
 			}
 		}
 		

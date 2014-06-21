@@ -120,7 +120,9 @@ public class ExpressionTree{
 			threads[i].join();
 			long timeExecution = calculations[i].getEndTime() - calculations[i].getStartTime();
 			String outputMessage = String.format("Thread %s worked %d ms", threads[i].getName(), timeExecution);
-			os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
+			if(os != null){
+				os.write(outputMessage.getBytes(Charset.forName("UTF-8")));
+			}
 		}
 		
 		Apfloat result = ExpressionTree.Calculate(this.root);
@@ -130,4 +132,17 @@ public class ExpressionTree{
 		return result;
 	}
 	
+  @Override
+	    public boolean equals(Object obj) {
+	        if (obj == this) {
+	            return true;
+	        }
+	        if (obj == null || obj.getClass() != this.getClass()) {
+	            return false;
+	        }
+	        
+	        ExpressionTree other = (ExpressionTree) obj;
+	        
+	        return this.root.equals(other.root);
+  	}
 }
