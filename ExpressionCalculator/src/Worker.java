@@ -9,14 +9,14 @@ import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 
 public class Worker {
-	public static String CalculateFromFile(String Path, OutputStream os, int numberOfThreads) throws IOException, InvalidValue, InvalidAlgorithmParameterException, InterruptedException
+	public static CalculationInfo CalculateFromFile(String Path, OutputStream os, int numberOfThreads) throws IOException, InvalidValue, InvalidAlgorithmParameterException, InterruptedException
 	{
 		String expression = Utilities.ReadFile(Path, Charset.forName("utf-8"));
 		
 		return CalculateFromExpression(expression, null, numberOfThreads);
 	}
 	
-	public static String CalculateFromExpression(String expression, OutputStream os, int numberOfThreads) throws InvalidValue, InvalidAlgorithmParameterException, IOException, InterruptedException
+	public static CalculationInfo CalculateFromExpression(String expression, OutputStream os, int numberOfThreads) throws InvalidValue, InvalidAlgorithmParameterException, IOException, InterruptedException
 	{
 		String postfix = Algorithms.CreatePostfixNotationFromInfix(expression);
 		ExpressionTree tree = Algorithms.CreateExpressionTreeFromPostfix(postfix);
@@ -25,7 +25,12 @@ public class Worker {
 		
 		Apfloat result = tree.Calculate(numberOfThreads, os);
 		
-		return result.toString();
+		long calculationTime = tree.getCalculationEnd() - tree.getCalculationStart();
+		String resultInfo = result.toString();
+		
+		CalculationInfo resultInformation = new CalculationInfo(calculationTime, resultInfo);
+		
+		return resultInformation;
 		
 	}
 }

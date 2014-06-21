@@ -200,7 +200,7 @@ public class Expression {
 		JButton btnCalculate = new JButton("Calculate");
 		btnCalculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String result;
+				CalculationInfo result;
 				String expression;
 				int numberOfThreads = (int) spinner.getValue();
 				if(inputFile.getText().equals("")){
@@ -209,7 +209,8 @@ public class Expression {
 						result = Worker.CalculateFromExpression(expression, null, numberOfThreads);
 					} 
 					catch (Exception e) {
-						result = e.getMessage();
+						resultField.setText(e.getMessage());
+						return;
 					}
 				}
 				else{
@@ -218,10 +219,11 @@ public class Expression {
 						result = Worker.CalculateFromFile(expression, null, numberOfThreads);
 					} 
 					catch (Exception e) {
-						result = e.getMessage();
+						resultField.setText(e.getMessage());
+						return;
 					}
 				}
-				resultField.setText(result);
+				FillInformation(result);
 			}
 		});
 		GridBagConstraints gbc_btnCalculate = new GridBagConstraints();
@@ -262,7 +264,11 @@ public class Expression {
 		calculatingTimeField.setColumns(10);
 	}
 	
-	
+	private void FillInformation(CalculationInfo info){
+		resultField.setText(info.getResult());
+		String time = Long.toString(info.getCalculatingTime());
+		calculatingTimeField.setText(time);
+	}
 
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
