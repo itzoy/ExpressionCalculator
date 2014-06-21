@@ -72,7 +72,7 @@ public class ExpressionTree{
 		this.calculationEnd = calculationEnd;
 	}
 	
-	private Queue<Node> GetNodes(int number){
+	protected Queue<Node> GetNodes(int number){
 		int repeats = 0;
 		Queue<Node> result = new LinkedList<Node>();
 		result.add(this.GetRoot());
@@ -84,8 +84,8 @@ public class ExpressionTree{
 			Node rightNode = frontNode.GetRightNode();
 			if(leftNode != null && leftNode.GetOperation() != null 
 					&& rightNode != null && rightNode.GetOperation() != null){
-				result.add(frontNode.GetLeftNode());
-				result.add(frontNode.GetRightNode());
+				result.add(leftNode);
+				result.add(rightNode);
 				number --;
 				repeats = 0;
 			}
