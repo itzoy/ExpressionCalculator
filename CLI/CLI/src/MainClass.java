@@ -51,7 +51,7 @@ public class MainClass {
 		
 		CalculationInfo result = Worker.CalculateFromFile(inputFileName, os, t);
 		
-		System.out.println("Execution time: " + result.getCalculatingTime());
+		System.out.println("Execution time: " + result.getCalculatingTime() + " ms");
 		
 		Utilities.WriteToFile(outputFileName, result.getResult());
 		

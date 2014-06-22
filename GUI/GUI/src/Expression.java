@@ -80,9 +80,9 @@ public class Expression {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{1, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblThreads_1 = new JLabel("Threads:");
@@ -183,23 +183,9 @@ public class Expression {
 		frame.getContentPane().add(resultField, gbc_resultField);
 		resultField.setColumns(10);
 		
-		JLabel lblq = new JLabel("-q");
-		GridBagConstraints gbc_lblq = new GridBagConstraints();
-		gbc_lblq.insets = new Insets(0, 0, 5, 5);
-		gbc_lblq.gridx = 0;
-		gbc_lblq.gridy = 6;
-		frame.getContentPane().add(lblq, gbc_lblq);
-		
-		JToggleButton tglbtnq = new JToggleButton("-q");
-		GridBagConstraints gbc_tglbtnq = new GridBagConstraints();
-		gbc_tglbtnq.insets = new Insets(0, 0, 5, 0);
-		gbc_tglbtnq.gridx = 2;
-		gbc_tglbtnq.gridy = 6;
-		frame.getContentPane().add(tglbtnq, gbc_tglbtnq);
-		
 		JButton btnCalculate = new JButton("Calculate");
 		btnCalculate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {		
 				CalculationInfo result;
 				String expression;
 				int numberOfThreads = (int) spinner.getValue();
@@ -229,29 +215,32 @@ public class Expression {
 		GridBagConstraints gbc_btnCalculate = new GridBagConstraints();
 		gbc_btnCalculate.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCalculate.gridx = 0;
-		gbc_btnCalculate.gridy = 7;
+		gbc_btnCalculate.gridy = 8;
 		frame.getContentPane().add(btnCalculate, gbc_btnCalculate);
+		
 		
 		JLabel lblLoading = new JLabel("Loading:");
 		GridBagConstraints gbc_lblLoading = new GridBagConstraints();
 		gbc_lblLoading.insets = new Insets(0, 0, 5, 5);
 		gbc_lblLoading.gridx = 1;
-		gbc_lblLoading.gridy = 7;
+		gbc_lblLoading.gridy = 8;
 		frame.getContentPane().add(lblLoading, gbc_lblLoading);
 		
 		progressBar = new JProgressBar();
 		GridBagConstraints gbc_progressBar = new GridBagConstraints();
 		gbc_progressBar.insets = new Insets(0, 0, 5, 0);
+		gbc_progressBar.gridheight = 2;
 		gbc_progressBar.gridx = 2;
-		gbc_progressBar.gridy = 7;
+		gbc_progressBar.gridy = 8;
 		progressBar.setValue(0);
 		frame.getContentPane().add(progressBar, gbc_progressBar);
 		
 		JLabel lblCalculatingTime = new JLabel("Calculating Time:");
 		GridBagConstraints gbc_lblCalculatingTime = new GridBagConstraints();
+		gbc_lblCalculatingTime.gridheight = 3;
 		gbc_lblCalculatingTime.insets = new Insets(0, 0, 0, 5);
 		gbc_lblCalculatingTime.gridx = 0;
-		gbc_lblCalculatingTime.gridy = 8;
+		gbc_lblCalculatingTime.gridy = 10;
 		frame.getContentPane().add(lblCalculatingTime, gbc_lblCalculatingTime);
 		
 		calculatingTimeField = new JTextField();
@@ -259,7 +248,7 @@ public class Expression {
 		GridBagConstraints gbc_calculatingTimeField = new GridBagConstraints();
 		gbc_calculatingTimeField.anchor = GridBagConstraints.NORTHWEST;
 		gbc_calculatingTimeField.gridx = 2;
-		gbc_calculatingTimeField.gridy = 8;
+		gbc_calculatingTimeField.gridy = 12;
 		frame.getContentPane().add(calculatingTimeField, gbc_calculatingTimeField);
 		calculatingTimeField.setColumns(10);
 	}
@@ -267,7 +256,7 @@ public class Expression {
 	private void FillInformation(CalculationInfo info){
 		resultField.setText(info.getResult());
 		String time = Long.toString(info.getCalculatingTime());
-		calculatingTimeField.setText(time);
+		calculatingTimeField.setText(time + " ms");
 	}
 
 	private class SwingAction extends AbstractAction {
